@@ -1,6 +1,6 @@
 # 色彩空间
 
-![](media/cover.jpg)
+![](media/cover.jpeg)
 
 ## 视网膜包含两种细胞
 - 视锥细胞： 对R(600nm)G(550)B(450)三个颜色敏感， 也是SML波长
@@ -20,9 +20,9 @@ color matching functions
 
 消灭R负值， 于是提出CIE XYZ， 三个想象出来的光。
 
-![](media/01.jpg)
-![](media/02.jpg)
-![](media/03.jpg)
+![](media/01.png)
+![](media/02.png)
+![](media/03.png)
 
 
 
