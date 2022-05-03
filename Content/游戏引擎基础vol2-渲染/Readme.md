@@ -1,22 +1,36 @@
 # 目录
 
 
-## Chapter 5: Graphics Processing
+## 第五章 : 图像处理
 
-5.1 Pixels
-5.2 Color Science
-5.2.1 The CIE RGB Color Space
-5.2.2 The CIE XYZ Color Space
-5.2.3 The sRGB Color Space
-5.3 Gamma Correction
-5.4 World Structure
-5.4.1 Coordinate Spaces
-5.4.2 Transform Hierarchy
-5.4.3 Vertex Transformations
-5.5 The Graphics Pipeline
-5.5.1 Geometry Processing
-5.5.2 Pixel Processing
-5.5.3 Frame Buffer Operations
+5.1 像素
+
+5.2 色彩科学
+
+  5.2.1 CIE RGB 色彩空间
+
+  5.2.2 CIE XYZ 色彩空间
+
+  5.2.3 sRGB 色彩空间
+
+5.3 伽玛矫正
+
+5.4 世界结构
+
+  5.4.1 坐标系
+  
+  5.4.2 变换层级
+  
+  5.4.3 顶点变换
+  
+5.5 图形管线
+
+  5.5.1 几何处理
+
+  5.5.2 像素处理
+
+  5.5.3 帧缓存运算
+
 Exercises for Chapter 5
 
 ## Chapter 6: Projections
