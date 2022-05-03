@@ -157,17 +157,17 @@ Exercises for Chapter 8
 
 9.3 包围体
 
-9.3.1 Bounding Spheres
+- 9.3.1 Bounding Spheres
 
-9.3.2 Bounding Boxes
+- 9.3.2 Bounding Boxes
 
 9.4 视椎裁切
 
-9.4.1 可见范围
+- 9.4.1 可见范围
 
-9.4.2 Sphere Visibility
+- 9.4.2 Sphere Visibility
 
-9.4.3 Box Visibility
+- 9.4.3 Box Visibility
 
 9.5 Light Culling
 
@@ -175,9 +175,9 @@ Exercises for Chapter 8
 
 9.7 Portal Systems
 
-9.7.1 Zones and Portals
+- 9.7.1 Zones and Portals
 
-9.7.2 Light Regions
+- 9.7.2 Light Regions
 
 9.8 Occluders
 
@@ -191,50 +191,52 @@ Exercises for Chapter 9
 
 10.2 广告牌
 
-10.2.1 Spherical Billboards
+- 10.2.1 Spherical Billboards
 
-10.2.2 Cylindrical Billboards
+- 10.2.2 Cylindrical Billboards
 
-10.2.3 Polyboards
+- 10.2.3 Polyboards
 
-10.2.4 剪裁
+- 10.2.4 剪裁
 
 10.3 The Structure Buffer
 
-10.4 Volumetric Effects
+10.4 体积渲染
 
-10.4.1 Halos
+- 10.4.1 光环
 
-10.4.2 光轴渲染？
+- 10.4.2 光轴渲染？
 
 10.5 环境遮罩
 
-10.5.1 遮罩缓存
+- 10.5.1 遮罩缓存
 
-10.5.2 深度模糊
+- 10.5.2 深度模糊
 
-10.6 Atmospheric Shadowing
+10.6 环境阴影
 
-10.6.1 The Atmosphere Buffer
+- 10.6.1 环境光缓存
 
-10.6.2 Sample Randomization
+- 10.6.2 Sample Randomization
 
-10.6.3 各向异性散射
+- 10.6.3 各向异性散射
 
-10.6.4 实现
+- 10.6.4 实现
 
 10.7 运动模糊
 
-10.7.1 速度缓存
+- 10.7.1 速度缓存
 
-10.7.2 Image Postprocessing
+- 10.7.2 图像处理
 
 10.8 等值面提取
 
-10.8.1 Marching Cubes
+- 10.8.1 立方体步进算法
 
-10.8.2 Preferred Polarity
+- 10.8.2 Preferred Polarity
 
-10.8.3 实现
+- 10.8.3 实现
 
 Exercises for Chapter 10
+
+//不知道的或者太显而易见的我就不翻译了
