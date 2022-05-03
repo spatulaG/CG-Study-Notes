@@ -49,6 +49,25 @@ R轴有负数
 
 白点实际上是RGB是1时在X+Y+Z=1平面上的投影，我们可以等比例放缩rgb，来得到白点所在的白色射线。
 其中，当Y=1时， 亮度为最大是色彩的上限。
+
+## 白点的推算思路：
+
+首先x = X/X+Y+Z, y = Y/X+Y+Z, z = Z/X+Y+Z. x+y+z = 1.
+
+- xyz:色坐标（投影到X + Y + Z = 1的平面上。这个二维色度空间（chromaticity color space）就被称为CIE 1931 xyz color space）
+- XYZ：三刺激值
+
+给出RY，GY，BY就可以算出RGB三刺激值
+
+<img src="media/04.png" width="400" >
+
+而白色坐标就是
+- WX = RX+GX+BX
+- WY...
+- WZ...
+
+然后给出白色的色坐标和亮度值也可以反推RGB三原色亮度。
+
 ```
 // 我们需要求解新的RGB颜色空间（sRGB）的三原色在XYZ颜色空间的索引值：
 Rxyz = (Rx, Ry, Rz)
