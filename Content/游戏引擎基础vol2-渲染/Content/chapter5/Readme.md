@@ -1,6 +1,6 @@
 # 色彩空间
 
-![](media/cover.jpeg | width=100)
+![](media/cover.jpeg | width=100px)
 
 ## 视网膜包含两种细胞
 - 视锥细胞： 对R(600nm)G(550)B(450)三个颜色敏感， 也是SML波长
