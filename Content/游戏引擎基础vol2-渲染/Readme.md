@@ -63,54 +63,93 @@ Exercises for Chapter 6
 
 <br />
 
-## Chapter 7: 着色器
+## 第七章 : 着色器
 
-7.1 Rendering Fundamentals
-7.1.1 Luminance
-7.1.2 The Rendering Equation
-7.2 Diffuse Reflection
-7.3 Specular Reflection
-7.4 Texture Mapping
-7.4.1 Texture Coordinates
-7.4.2 Conventional Texture Mapping
-7.4.3 Cube Texture Mapping
-7.5 Tangent Space
-7.6 Bump Mapping
-7.6.1 Normal Map Construction
-7.6.2 Rendering with Normal Maps
-7.6.3 Blending Normal Maps
-7.7 Parallax Mapping
-7.8 Horizon Mapping
-7.8.1 Horizon Map Construction
-7.8.2 Rendering with Horizon Maps
-7.8.3 Ambient Occlusion Mapping
+7.1 渲染基础
+
+- 7.1.1 流明（亮度）
+
+- 7.1.2 渲染方程
+
+7.2 漫反射
+
+7.3 高光反射
+
+7.4 贴图
+
+- 7.4.1 贴图坐标
+
+- 7.4.2 传统贴图
+
+- 7.4.3 立方体贴图
+
+7.5 切线空间
+
+7.6 凹凸贴图
+
+- 7.6.1 法线贴图
+
+- 7.6.2 法线渲染
+
+- 7.6.3 法线混合
+
+7.7 视差贴图
+
+7.8 水平贴图
+
+- 7.8.1 水平贴图构成
+
+- 7.8.2 水平贴图渲染
+
+- 7.8.3 环境光遮罩
+
 Exercises for Chapter 7
 
-## Chapter 8: Lighting and Shadows
+## 第八章 : 光与影
 
-8.1 Light Sources
-8.1.1 Point Lights
-8.1.2 Spot Lights
-8.1.3 Infinite Lights
-8.2 Extent Optimization
-8.2.1 Scissor Rectangle
-8.2.2 Depth Bounds
-8.3 Shadow Maps
-8.3.1 2D Shadow Maps
-8.3.2 Cube Shadow Maps
-8.3.3 Cascaded Shadow Maps
-8.3.4 Shadow Depth Offset
-8.4 Stencil Shadows
-8.4.1 Rendering Algorithm
+8.1 光源
+
+- 8.1.1 点光源
+
+- 8.1.2 聚光灯
+
+- 8.1.3 平行光
+
+8.2 优化
+
+- 8.2.1 视口裁切
+
+- 8.2.2 深度区间
+- 
+8.3 阴影贴图
+
+- 8.3.1 2D 阴影贴图
+
+- 8.3.2 立方体阴影贴图
+
+- 8.3.3 级联阴影贴图
+
+- 8.3.4 阴影深度位移
+
+8.4 模版阴影
+
+8.4.1 渲染算法
+
 8.4.2 Variant Selection
-8.4.3 Shadow Volumes
-8.4.4 Optimizations
-8.5 Fog
-8.5.1 Absorption and Scattering
+
+8.4.3 体积阴影？
+
+8.4.4 优化
+
+8.5 雾
+
+8.5.1 光的吸收和散射
+
 8.5.2 Halfspace Fog
+
 Exercises for Chapter 8
 
-## Chapter 9: Visibility and Occlusion
+## 第九章 : 可见度和遮罩
 
 9.1 Polygon Clipping
 9.2 Polyhedron Clipping
