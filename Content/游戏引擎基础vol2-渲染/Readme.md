@@ -120,7 +120,7 @@ Exercises for Chapter 7
 - 8.2.1 视口裁切
 
 - 8.2.2 深度区间
-- 
+
 8.3 阴影贴图
 
 - 8.3.1 2D 阴影贴图
@@ -151,49 +151,90 @@ Exercises for Chapter 8
 
 ## 第九章 : 可见度和遮罩
 
-9.1 Polygon Clipping
-9.2 Polyhedron Clipping
-9.3 Bounding Volumes
+9.1 几何裁切
+
+9.2 立体几何裁切
+
+9.3 包围体
+
 9.3.1 Bounding Spheres
+
 9.3.2 Bounding Boxes
-9.4 Frustum Culling
-9.4.1 Visibility Regions
+
+9.4 视椎裁切
+
+9.4.1 可见范围
+
 9.4.2 Sphere Visibility
+
 9.4.3 Box Visibility
+
 9.5 Light Culling
+
 9.6 Shadow Culling
+
 9.7 Portal Systems
+
 9.7.1 Zones and Portals
+
 9.7.2 Light Regions
+
 9.8 Occluders
+
 9.9 Fog Occlusion
+
 Exercises for Chapter 9
 
-## Chapter 10: Advanced Rendering
+## 第十章 : 渲染进阶
 
-10.1 Decals
-10.2 Billboards
+10.1 贴花
+
+10.2 广告牌
+
 10.2.1 Spherical Billboards
+
 10.2.2 Cylindrical Billboards
+
 10.2.3 Polyboards
-10.2.4 Trimming
+
+10.2.4 剪裁
+
 10.3 The Structure Buffer
+
 10.4 Volumetric Effects
+
 10.4.1 Halos
-10.4.2 Shafts
-10.5 Ambient Occlusion
-10.5.1 The Occlusion Buffer
-10.5.2 Depth-Aware Blurring
+
+10.4.2 光轴渲染？
+
+10.5 环境遮罩
+
+10.5.1 遮罩缓存
+
+10.5.2 深度模糊
+
 10.6 Atmospheric Shadowing
+
 10.6.1 The Atmosphere Buffer
+
 10.6.2 Sample Randomization
-10.6.3 Anisotropic Scattering
-10.6.4 Implementation
-10.7 Motion Blur
-10.7.1 The Velocity Buffer
+
+10.6.3 各向异性散射
+
+10.6.4 实现
+
+10.7 运动模糊
+
+10.7.1 速度缓存
+
 10.7.2 Image Postprocessing
-10.8 Isosurface Extraction
+
+10.8 等值面提取
+
 10.8.1 Marching Cubes
+
 10.8.2 Preferred Polarity
-10.8.3 Implementation
+
+10.8.3 实现
+
 Exercises for Chapter 10
