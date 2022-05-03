@@ -1,6 +1,6 @@
 # 目录
 <br />
-![](media/cover.jpg)
+![](media/cover.jpeg)
 
 <br />
 
