@@ -39,20 +39,31 @@ Exercises for Chapter 5
 
 <br />
 
-## Chapter 6: Projections
+## 第六章: 投影
 
-6.1 The View Frustum
-6.2 Perspective-Correct Interpolation
-6.3 Projection Matrices
-6.3.1 Perspective Projection Matrices
-6.3.2 Infinite Projection Matrices
-6.3.3 Projected Depth Precision
-6.3.4 Orthographic Projections
-6.3.5 Frustum Plane Extraction
-6.4 Oblique Clipping Planes
+6.1 视锥
+
+6.2 透视差值
+
+6.3 投影矩阵
+
+- 6.3.1 透视投影矩阵
+
+- 6.3.2 无穷远投影矩阵
+
+- 6.3.3 投影深度精度
+
+- 6.3.4 正交投影
+
+- 6.3.5 视锥切面
+
+6.4 自定义切面
+
 Exercises for Chapter 6
 
-## Chapter 7: Shaders
+<br />
+
+## Chapter 7: 着色器
 
 7.1 Rendering Fundamentals
 7.1.1 Luminance
