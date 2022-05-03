@@ -21,10 +21,11 @@ color matching functions
 消灭R负值， 于是提出CIE XYZ， 三个想象出来的光。
 
 ![R轴有负数](media/01.png)
+<img src="media/01.png" width="400" >
 R轴有负数
-![找到XYZ](media/02.png)
+<img src="media/02.png" width="400" >
 找到XYZ
-![变换成垂直坐标系](media/03.png)
+<img src="media/03.png" width="400" >
 变换成垂直坐标系
 
 
