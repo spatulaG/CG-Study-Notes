@@ -10,22 +10,25 @@
 
 CIE的等色匹配实验为了找到primary（三元光）和复色的配比得到了这张图：
 
-![](https://upload.wikimedia.org/wikipedia/commons/3/36/CIE1931_RGBCMF.png)
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/36/CIE1931_RGBCMF.png" width="400" >
 
 确定了RGB分别是 700，546.1和435.8//RGB
 但450-550范围内的长光需要负值的红光才能匹配到，但是光只能加不能减。
 
-
-color matching functions
+###color matching functions
 
 消灭R负值， 于是提出CIE XYZ， 三个想象出来的光。
 
-![R轴有负数](media/01.png)
 <img src="media/01.png" width="400" >
+
 R轴有负数
+
 <img src="media/02.png" width="400" >
+
 找到XYZ
+
 <img src="media/03.png" width="400" >
+
 变换成垂直坐标系
 
 
