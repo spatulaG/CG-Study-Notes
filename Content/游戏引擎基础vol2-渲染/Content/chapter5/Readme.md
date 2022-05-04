@@ -166,6 +166,47 @@ Dolby提出的PQ传递函数在12位精度下所得到的亮度差曲线，可�
 PQ传递函数输出的是一个范围在0到10000 cd/m²的绝对亮度值，而SDR输出的则是一个在0到1范围内的相对亮度值，SDR显示器显示的真正亮度值是未知的。这种确定性在我们debug时也很有帮助，例如PQ值为0.5时对应的亮度值大约为100尼特，它是老的LCD显示器常见的亮度峰值；PQ为0.75时对应的亮度值大约为1000尼特，它是一部分HDR TV显示器的亮度峰值。
 
 很多游戏引擎在HDR显示时都会先使用PQ传递函数把场景线性亮度值转换成0到1的编码值并以此来采样一张3D LUT做Color Grading和Tonemapping的操作。例如，UE4在为HDR显示计算3D LUT时会使用ST2084ToLinear进行解码来得到线性亮度值，并在此亮度值上做后续的颜色操作
+```
+// Since ST2084 returns linear values in nits, divide by a scale factor to convert 
+// the reference nit result to be 1.0 in linear. 
+// (for efficiency multiply by precomputed inverse) 
+LinearColor = ST2084ToLinear(LUTEncodedColor) * LinearToNitsScaleInverse;
+```
+在采样这张3D LUT时，会进行上述计算的反函数来把线性亮度值转换成0到1的纹理采样坐标：
+```
+// ST2084 expects to receive linear values 0-10000 in nits. 
+// So the linear value must be multiplied by a scale factor to convert to nits. 
+float3 LUTEncodedColor = LinearToST2084(LinearColor * LinearToNitsScale);  
+
+float3 UVW = LUTEncodedColor * ((LUTSize - 1) / LUTSize) + (0.5f / LUTSize); 
+float3 OutDeviceColor = Texture3DSample( ColorGradingLUT, ColorGradingLUTSampler, UVW ).rgb; 
+```
+上述PQ传递函数需要两次pow计算和一次rcp计算，在计算时要小心它的指令消耗：
+```
+// Dolby PQ transforms 
+// 
+float3 ST2084ToLinear(float3 pq) 
+{
+     const float m1 = 0.1593017578125; // = 2610. / 4096. * .25;
+     const float m2 = 78.84375; // = 2523. / 4096. *  128;
+     const float c1 = 0.8359375; // = 2392. / 4096. * 32 - 2413./4096.*32 + 1;
+     const float c2 = 18.8515625; // = 2413. / 4096. * 32;
+     const float c3 = 18.6875; // = 2392. / 4096. * 32;
+     const float C = 10000.;
+     float3 Np = pow( pq, 1./m2 );
+     float3 L = Np - c1;
+     L = max(0., L);
+     L = L / (c2 - c3 * Np);
+     L = pow( L, 1./m1 );
+     float3 P = L * C;
+
+     return P;
+} 
+```
+
+这种线性到线性的对应关系并不满足视觉上的线性关系，这会造成高亮和较暗区域都缺少细节。因此，我们仍然需要某种Tonemapping操作来把我们场景里高动态亮度值重新映射到显示设备可支持的亮度范围内，在这个映射过程中可以适当提高高亮和阴影区域的对比度来得到更好的视觉效果。ACES中就提供了几种最常见也是最通用的HDR曲线映射（View Transform），它们被分别用于1000 cd/m²、2000 cd/m²和4000 cd/m²标准的HDR显示。这些映射函数的设计初衷是为了让HDR显示可以得到和SDR显示在视觉上尽可能一致的画面效果。在后面讲到ACES时我们会具体看到这些映射函数。
+
+
 
 ## 引用：
 
