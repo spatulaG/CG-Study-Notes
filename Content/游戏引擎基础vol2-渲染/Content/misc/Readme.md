@@ -36,12 +36,12 @@ kernel void image_filiter(constant ImageSaturationParams *params [[buffer(0)]],
     quad1.x = floor(blueColor) - (quad1.y * 8.0);
     
     int2 quad2;
-
-    quad2.y = floor(ceil(blueColor) / 8.0);
+    //取邻近的两个方块
+    quad2.y = floor(ceil(blueColor) / 8.0); 
     quad2.x = ceil(blueColor) - (quad2.y * 8.0);
     
     half2 texPos1;
-    texPos1.x = (quad1.x * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * color.r);
+    texPos1.x = (quad1.x * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * color.r); //0-63，所以要减去1/512， 0.5/512取中央位置
     texPos1.y = (quad1.y * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * color.g);
     
     half2 texPos2;
@@ -50,7 +50,7 @@ kernel void image_filiter(constant ImageSaturationParams *params [[buffer(0)]],
     
     
     half4 newColor1 = lutTexture.sample(samp,float2(texPos1.x * 512 ,texPos2.y * 512));
-    half4 newColor2 = lutTexture.sample(samp,float2(texPos2.x * 512,texPos2.y * 512 ));
+    half4 newColor2 = lutTexture.sample(samp,float2(texPos2.x * 512 ,texPos2.y * 512 ));
   
     half4 newColor = mix(newColor1, newColor2, half(fract(blueColor)));
     
@@ -86,8 +86,7 @@ kernel void image_filiter(constant ImageSaturationParams *params [[buffer(0)]],
 
 [来源](https://programmer.ink/think/metal-series-of-tutorials-2-metal-implementation-of-lut-filters.html)
 举例说明的话就是：
-First, we determine which square b = 0.2 * 63 = 12.6, that is (4, 1) which one to use.
-r = 0.4 * 63 = 25.6, g = 0.6 * 63 = 37.8 to convert to macrocoordinates (4 * 64 + 25.6, 1 * 64 + 37.8)
-The first three steps are all floating-point numbers, but the pixels of our filters are fixed and there are no decimal numbers.
-For r,g finally converts the arrival coordinates to normalized coordinates, ((4*64+25.6)/512, (1*64+37.8)/512), and extracts the exact color values by sampler interpolation.
-For b, we can take the next box (5,1) and mix the two colors to get the final color.
+- 首先决定哪个蓝色方块，比如 b = 0.2 * 63 = 12.6那就是（4，1）
+- 然后决定R和G的坐标， r = 0.4 * 63 = 25.6, g = 0.6 * 63 = 37.8。那么在一个8 * 64 = 512的阵列中，坐标是(4 * 64 + 25.6, 1 * 64 + 37.8)
+- 但因为LUT存储是离散的所以我们要去掉浮点((4 * 64 + 25.6)/512, (1 * 64 + 37.8)/512)//最终转换到(0,1)区间
+- 至于b我们取ceil临近格来插值
