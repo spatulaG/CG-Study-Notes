@@ -211,7 +211,7 @@ float3 ST2084ToLinear(float3 pq)
 
 目前，在各个软件里使用ACES工作流最方便的途径就是使用OpenColorIO。OpenColorIO是一个Sony Pictures Imageworks开发的开源颜色管理系统。诸如Nuke、Fusion、Maya等软件都已支持OpenColorIO，我们可以使用OCIO配置文件来进行色彩管理，最新的ACES OCIO文件可以在github上下载，这些配置文件可以帮助我们对图像做各种ACES颜色转换。
 
-## 词典
+## ACES 词典
 使用LUT实现ACES（Academy Color Encoding System）会涉及到的：
 - IDT（Input Device Transform）：把拍摄的图像素材和内容变换为ACES颜色空间和编码规范的过程。
 - RRT（Reference Rendering Transform）：因为ACES标准的范围很大，甚至可以显示ACES色彩的显示设备还没有出现，所以我们需要通过RRT通过色彩映射把颜色显示在我们的监看设备
@@ -220,6 +220,12 @@ float3 ST2084ToLinear(float3 pq)
 
 ![](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E5%9F%BA%E7%A1%80vol2-%E6%B8%B2%E6%9F%93/Content/chapter5/media/Aces%20lmt%20pipeline.png)
 
+- SSTS(Single Stage Tone Scale): 使用一个统一的算法替代(RRT+ODT)。
+- ACEScg：使用线性转换函数编码的scene-referred颜色空间，它主要用于CG、VFX和合成阶段
+- AP0和AP1三原色的值是一大批专家们为了它们的应用场景而严格设计和定义的。AP0的三个顶点所围成的区域包含了整个光谱轨迹, AP1只有G稍微出格。
+- Rec. 709是基于国际电信联盟无线电通信部门 BT.709 制定的高清电视（HDTV - HD）的色彩标准。色彩空间与 sRBG 相差无几，也就是我们常说的 sRGB 覆盖 Rec.709 色彩空间。覆盖就是大于此色彩空间，并覆盖。从大到小：Rec.2020＞ DCI-P3 ＞ sRGB ≈ Rec.709。
+
+![](media/color space.jpeg)
 ## 引用：
 
 [具体实验参考](https://medium.com/hipster-color-science/a-beginners-guide-to-colorimetry-401f1830b65a)
@@ -229,3 +235,5 @@ float3 ST2084ToLinear(float3 pq)
 [HDR for CG artists](https://chrisbrejon.com/cg-cinematography/)
 
 [wiki](https://en.wikipedia.org/wiki/RGB_color_spaces)
+
+[ACES](https://github.com/ampas/aces-dev/tree/master)
