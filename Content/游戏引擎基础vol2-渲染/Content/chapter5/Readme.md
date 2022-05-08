@@ -1,4 +1,8 @@
-# 颜色处理
+# 5.1 像素
+
+像素储存于帧缓冲（frame buffer）
+
+# 5.2 色彩科学
 
 <img src="media/cover.jpeg" width="100" height="100">
 
@@ -237,3 +241,5 @@ float3 ST2084ToLinear(float3 pq)
 [wiki](https://en.wikipedia.org/wiki/RGB_color_spaces)
 
 [ACES](https://github.com/ampas/aces-dev/tree/master)
+
+[Lele Feng](https://www.zhihu.com/people/lele-feng-15/posts)
