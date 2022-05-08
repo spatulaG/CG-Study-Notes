@@ -206,6 +206,17 @@ float3 ST2084ToLinear(float3 pq)
 
 这种线性到线性的对应关系并不满足视觉上的线性关系，这会造成高亮和较暗区域都缺少细节。因此，我们仍然需要某种Tonemapping操作来把我们场景里高动态亮度值重新映射到显示设备可支持的亮度范围内，在这个映射过程中可以适当提高高亮和阴影区域的对比度来得到更好的视觉效果。ACES中就提供了几种最常见也是最通用的HDR曲线映射（View Transform），它们被分别用于1000 cd/m²、2000 cd/m²和4000 cd/m²标准的HDR显示。这些映射函数的设计初衷是为了让HDR显示可以得到和SDR显示在视觉上尽可能一致的画面效果。在后面讲到ACES时我们会具体看到这些映射函数。
 
+## 评价
+我们一般认为使用光谱渲染器（例如Mitsuba，使用波长进行颜色计算）得到的结果是ground truth。用gt来做差值颜色越暗表示差值越小也就意味着结果更接近ground truth更正确。
+
+目前，在各个软件里使用ACES工作流最方便的途径就是使用OpenColorIO。OpenColorIO是一个Sony Pictures Imageworks开发的开源颜色管理系统。诸如Nuke、Fusion、Maya等软件都已支持OpenColorIO，我们可以使用OCIO配置文件来进行色彩管理，最新的ACES OCIO文件可以在github上下载，这些配置文件可以帮助我们对图像做各种ACES颜色转换。
+
+## 词典
+使用LUT实现ACES会涉及到的：
+- IDT（Input Device Transform）：把拍摄的图像素材和内容变换为ACES颜色空间和编码规范的过程。
+- RRT（Reference Rendering Transform）：因为ACES标准的范围很大，甚至可以显示ACES色彩的显示设备还没有出现，所以我们需要通过RRT通过色彩映射把颜色显示在我们的监看设备
+- ODT（Output Device Transform）：根据我们的监视看环境和最终输出要求将ACES转换为我们的目标色彩，比如DCI-P3、REC.709、sRGB等。简单来说，ODT就是输出设备转换器。
+
 
 
 ## 引用：
