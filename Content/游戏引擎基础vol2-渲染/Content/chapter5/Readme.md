@@ -7,7 +7,7 @@ FBO(Frame Buffer Object)定义上述三者的attr。描述属性的状态，例�
 - 内存：随机存取存储器 RAM（Random Access Memory）是与 CPU 直接交换数据的内部存储器。
 - 显存（VRAM）：帧缓存
 
-通常Framebuffer中有前端和后端两类buffer，就是我们平常见到的double buffer技术，目的是为了解决屏幕撕裂（screen tear）问题。 前端buffer直接对应于欲显示的内容，需要显示的数据先拷贝到后端buffer，再在一定的时机(比如vblank)将后端buffer的数据swap到前端，从而显示出来。
+通常Framebuffer中有前端和后端两类buffer，就是我们平常见到的double buffer技术，目的是为了解决[屏幕撕裂（screen tear）](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E5%9F%BA%E7%A1%80vol2-%E6%B8%B2%E6%9F%93/Content/misc/Readme.md#screen-tear)问题。 前端buffer直接对应于欲显示的内容，需要显示的数据先拷贝到后端buffer，再在一定的时机(比如vblank)将后端buffer的数据swap到前端，从而显示出来。
 
 # 5.2 色彩科学
 
