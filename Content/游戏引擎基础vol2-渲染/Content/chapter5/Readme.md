@@ -218,7 +218,7 @@ float3 ST2084ToLinear(float3 pq)
 - ODT（Output Device Transform）：根据我们的监视看环境和最终输出要求将ACES转换为我们的目标色彩，比如DCI-P3、REC.709、sRGB等。简单来说，ODT就是输出设备转换器。
 - LMT：一个由用户定义的LUT转换阶段，定基调
 
-![](media/Aces lmt pipeline.png)
+![](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E5%9F%BA%E7%A1%80vol2-%E6%B8%B2%E6%9F%93/Content/chapter5/media/Aces%20lmt%20pipeline.png)
 
 ## 引用：
 
