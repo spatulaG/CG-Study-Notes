@@ -230,6 +230,7 @@ float3 ST2084ToLinear(float3 pq)
 - Rec. 709是基于国际电信联盟无线电通信部门 BT.709 制定的高清电视（HDTV - HD）的色彩标准。色彩空间与 sRBG 相差无几，也就是我们常说的 sRGB 覆盖 Rec.709 色彩空间。覆盖就是大于此色彩空间，并覆盖。从大到小：Rec.2020＞ DCI-P3 ＞ sRGB ≈ Rec.709。
 
 <img src="media/color space.jpeg" width="500">
+
 ## 引用：
 
 [具体实验参考](https://medium.com/hipster-color-science/a-beginners-guide-to-colorimetry-401f1830b65a)
