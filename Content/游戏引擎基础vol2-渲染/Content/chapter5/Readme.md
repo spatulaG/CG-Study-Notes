@@ -212,12 +212,13 @@ float3 ST2084ToLinear(float3 pq)
 目前，在各个软件里使用ACES工作流最方便的途径就是使用OpenColorIO。OpenColorIO是一个Sony Pictures Imageworks开发的开源颜色管理系统。诸如Nuke、Fusion、Maya等软件都已支持OpenColorIO，我们可以使用OCIO配置文件来进行色彩管理，最新的ACES OCIO文件可以在github上下载，这些配置文件可以帮助我们对图像做各种ACES颜色转换。
 
 ## 词典
-使用LUT实现ACES会涉及到的：
+使用LUT实现ACES（Academy Color Encoding System）会涉及到的：
 - IDT（Input Device Transform）：把拍摄的图像素材和内容变换为ACES颜色空间和编码规范的过程。
 - RRT（Reference Rendering Transform）：因为ACES标准的范围很大，甚至可以显示ACES色彩的显示设备还没有出现，所以我们需要通过RRT通过色彩映射把颜色显示在我们的监看设备
 - ODT（Output Device Transform）：根据我们的监视看环境和最终输出要求将ACES转换为我们的目标色彩，比如DCI-P3、REC.709、sRGB等。简单来说，ODT就是输出设备转换器。
+- LMT：一个由用户定义的LUT转换阶段，定基调
 
-
+![LMT pipeline](/media/Aces lmt pipeline.png)
 
 ## 引用：
 
