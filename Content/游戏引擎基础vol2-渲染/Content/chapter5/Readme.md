@@ -240,19 +240,22 @@ float3 ST2084ToLinear(float3 pq)
 
 # 5.4 世界坐标
 转换世界坐标时，W（当前node）= W（上层node）* M（本层）
-坐标转换时经过六个步骤
 
-1物体坐标object space
-2(世界坐标world space)
-3相机坐标camera space
-4裁切坐标clip space
-5设备坐标device space
-6视口坐标viewport space
+### 坐标转换时经过六个步骤
+
+- 物体坐标object space
+- (世界坐标world space)
+- 相机坐标camera space
+- 裁切坐标clip space
+- 设备坐标device space
+- 视口坐标viewport space
 
 从模型坐标---Mobj--世界坐标----(Mcamera^(-1))---相机坐标
+
 <--------------------------MVP------------------------->
 
 其中相机的坐标可以想象成把相机归位到视口，所以这里取相机世界坐标的逆矩阵。
+
 MVP变换的目的是把XYZ分别投射到一个长宽-w~w深度-~w的长方空间内，然后在device space中除去w变成一个2x2x1的范围
 
 # 5.5 渲染管线
