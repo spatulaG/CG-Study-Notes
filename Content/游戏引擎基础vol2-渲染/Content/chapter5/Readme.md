@@ -259,7 +259,55 @@ float3 ST2084ToLinear(float3 pq)
 MVP变换的目的是把XYZ分别投射到一个长宽-w~w深度-~w的长方空间内，然后在device space中除去w变成一个2x2x1的范围
 
 # 5.5 渲染管线
-这里重点说Hull Shader 和 Domain Shader
+这里重点说Hull Shader 和 Domain Shader。注意如果要开启tessellation就要同时开启HS和DS， 并且一旦开启vertex shader的输出就不再是tri而是patch单位的control points了。
+
+## 5.5.1 几何处理 Geometry Processing
+
+### Hull Shader
+
+又叫曲面细分shader。包含下面这些属性
+
+- domain的patch三种：tri, quad, isoline
+- 分割类型（partitioning）三种：integer, fractional_even, fractional_odd。前者是突变，后两者是在偶数（奇数）是由两边端点向内展开
+- output topo三种，逆时针顺时针和线段
+- output control points对应domain shader的output patch
+- maxTess Factor：细分度（最大64）
+- Patch constant Func
+
+HS包含的参数蛋Input Patch（来自VS）， point ID和prim ID。
+
+细分有两种：
+- SV_TessFactor：每个边的分割设定（可以每个边不同）
+- SV_InsideTessFactor：内部的细分设定（将面的长和宽分成多少段）
+
+### Domain Shader
+DS可以直接到FS也可以经过Geometry Shader。GS在粒子系统里可以把输入的点集变成一个个小billboard。而VS可以传入Framebuffer颜色、深度和模板缓冲信息。
+
+参数包含：
+- PatchTess 细分参数来自const HS
+- Domain Location顶点位置信息
+- Output Patch
+
+GPU在得到来自VS的点集之后会用vertex array来生成三角形避免重复点。已经经过VS变换的点会被存放在post-transform cache里被随时调用。一个vertex的信息所占据的全部内存被叫做一个跨步（stride）。一般颜色可能RGBA各占8bit，normal和tangent因为Z可以由XY计算所以一般各占16bit。几何处理的最后要进行世界坐标转换。 一般由VS，GS或DS处理。
+MVP.xyz代表xyz世界单位向量，w代表世界坐标。
+
+## 5.5.2 片元处理 Fragment Shader
+
+Clipping裁切包含 scissor test, 用于discard 视口之外，guard band（+- bWclip）之内的区域。而保护渲染区外的内容会被clip掉。
+backface culling则是由三角形各点顺时针逆时针判断的。 
+
+在运行FS的时候我们把像素格拆分成一个个2x2的像素块（为了解决mipmap的问题【TODO】）。计算导数时就Yup-Ybottom, Xright-Xleft。因此每个边缘的2x2块由于三角形共享边会被运行两次， 优化时要格外小心使用复杂FS的大量的小三角形。想post这种全屏幕效果一般就直接整个视口用一个三角形。
+
+栅格化时三角形内部的点使用barycentric coordinate，也就是按照每个顶点的权重（0-1）定义的坐标系。栅格化同时还要考虑AA。传统的SSAA很浪费，优化后的MSAA绕着目标点取rotate grid的四个像素格取平均。这样做的弊端是要额外占用4倍mem。
+
+## 5.5.3 帧缓存 Frame Buffer
+- Depth Test
+- Stencil Test
+- Depth Bound Test
+
+并且deferred shader还可以利用early Z来提早丢掉像素点。由于透视空间的Z非线性，现在通常会把近处设为1远为0.这是因为GPU硬件在存储浮点的时候精度也是非线性（尾数^指数）越接近0变化越大，这样和Z精度几乎一致，精度的衰减就没那么明显了。
+
+24bit的depth以外剩下8bit是stencil，用于一些用户自定义的判断。而depth bound则是把深度也按W clip一次。
 
 
 ## 引用：
