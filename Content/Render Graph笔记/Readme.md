@@ -20,9 +20,10 @@ Render Graph不会立刻执行渲染命令，而是先记录完整帧命令之�
 
 程序优化的一个大方向就是提高并行度，GPU技术不断发展，已经可以用很低的成本和功耗提供很高的性能，但是就算在执行很密集的渲染任务时，GPU的很大一部分也会是Idle状态，所以通过解决这个问题可以提升GPU的性能，Asyn Compute就是一种方法。GPU在很大程度上依赖管线化的方式来使性能达标，管线中的任意一个阶段出现瓶颈都会使其他阶段不能充分利用。这些阶段包括Command Processing、Geometry Processing、Rasterization、Shading、Raster Operation。每个阶段可以大量并行处理，但是每个阶段的吞吐量（Throughput）还依赖于其他阶段。
 
-现代GPU通常包括多个独立的Engine来提供专用的功能。很多GPU是一个Graphic Engine、一个Compute Engine、一个或多个Copy Engine。
-
-Engine本质上就是Command Processor，它们可以并行处理命令，3D Engine执行的就是正常的Graphic Pipeline，包括VS、光栅化、PS等；Compute Engine执行的是Compute Pipeline，只有一个阶段：Compute Shader；Copy Engine用来拷贝资源。
+现代GPU通常包括多个独立的Engine来提供专用的功能:Engine本质上就是Command Processor，它们可以并行处理命令.
+- Graphic(3D) Engine:执行Graphic Pipeline，包括VS、光栅化、PS等
+- Compute Engine:Compute Pipeline只有一个阶段：Compute Shade
+- 一个或多个Copy Engine:拷贝资源
 
 ```
 每个厂商实现这个功能的方法可能很不一样，AMD的GCN（Graphics Core Next）架构使用一个叫做“Asynchronous Compute Engine”来处理[1]
@@ -31,3 +32,13 @@ Arm使用两个Queue，一个Queue处理Vertex、Tiling、Compute，另一个处
 PC和Mobile的Async Compute有比较大的区别，实现时需要针对目标平台。
 图形API提供了Async Compute的功能，运行时GPU也得支持Async Compute才能得到性能的提升。
 ```
+DirectX 12中提供了三种Command Queue驱动这三个Engine:
+- 3D（Graphic） Queue可以驱动这三个Engine
+- Compute Queue可以驱动Compute和Copy Engine
+- Copy Queue只能驱动Copy Engine
+
+向3D Queue提交一个3D Command List和Compute Command List会使3D Queue启动3D Engine和Compute Engine，但不是同一时间
+
+另一种方法是向3D Queue提交一个3D Command List，向Compute Queue提交一个Compute Command List，这样的结果就是3D Queue驱动3D Engine，同时Compute Queue驱动Compute Engine，这种行为就叫做**Async Compute**
+
+Async Compute的目的是让开发者在比线程更高的层次上实现并行，提高GPU的利用率。
