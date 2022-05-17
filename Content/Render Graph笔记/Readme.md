@@ -42,3 +42,5 @@ DirectX 12中提供了三种Command Queue驱动这三个Engine:
 另一种方法是向3D Queue提交一个3D Command List，向Compute Queue提交一个Compute Command List，这样的结果就是3D Queue驱动3D Engine，同时Compute Queue驱动Compute Engine，这种行为就叫做**Async Compute**
 
 Async Compute的目的是让开发者在比线程更高的层次上实现并行，提高GPU的利用率。
+
+![](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/Render%20Graph%E7%AC%94%E8%AE%B0/async.png?raw=true)
