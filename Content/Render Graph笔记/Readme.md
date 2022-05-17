@@ -50,12 +50,15 @@ Async Compute的目的是让开发者在比线程更高的层次上实现并行�
 使用Compute Shader的渲染引擎都可以使用Async Compute，随着引擎变得越来越复杂，Compute Shader的使用也越来越多.可以使用Async Compute加速的一个例子是Post-Processing，现在的游戏会大量使用后处理，后处理是在图形渲染管线完成一帧后应用的，经常使用Compute Shader来实现。现在的游戏的另一个常用的技术就是Deferred Rendering。通常在渲染前会有一个Pass使用Compute Shader来计算哪些光源影响了屏幕中的每个像素，这一步也可以使用Async Compute加速。
 
 需要注意让Graphic Queue和Compute Queue利用不同的GPU资源，下图中Shadow maps的瓶颈在光栅化这些固定功能单元，这时执行计算任务是很合适的。
+
 ![](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/Render%20Graph%E7%AC%94%E8%AE%B0/async1.png?raw=true)
 
 下面这种情况效率还可能不如不用Async Compute：
+
 ![](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/Render%20Graph%E7%AC%94%E8%AE%B0/async2.png?raw=true)
 
 让多帧重叠可以进一步提高利用率
+
 ![](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/Render%20Graph%E7%AC%94%E8%AE%B0/async3.png?raw=true)
 
 不过实现时还要考虑目标平台，比如Arm Mali GPU在实现Compute的后处理时就要避免出现Fragment->Compute->Fragment的管线，因为会导致Fragment Idle，一种解决办法是让第N帧的后处理跟第N+1帧的Shadow Map并行，因为Shadow Map瓶颈在光栅化这些固定功能单元，这时执行计算任务是很合适的。
