@@ -44,3 +44,16 @@ DirectX 12中提供了三种Command Queue驱动这三个Engine:
 Async Compute的目的是让开发者在比线程更高的层次上实现并行，提高GPU的利用率。
 
 ![](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/Render%20Graph%E7%AC%94%E8%AE%B0/async.png?raw=true)
+
+真正的GPU中，Compute Engine不能使用GPU中的固定功能单元，Graphic Engine的某些阶段（如几何处理、光栅化）遇到瓶颈时，Compute Engine中重叠的任务就可以有效率利用没有使用的GPU资源（如Compute Units、寄存器、带宽），提高GPU的利用率，这个思想源于上一代游戏主机，所以主机游戏通常比同等级PC的性能表现更好。现代图形API也给其他平台带来了类似的功能。
+
+使用Compute Shader的渲染引擎都可以使用Async Compute，随着引擎变得越来越复杂，Compute Shader的使用也越来越多.可以使用Async Compute加速的一个例子是Post-Processing，现在的游戏会大量使用后处理，后处理是在图形渲染管线完成一帧后应用的，经常使用Compute Shader来实现。现在的游戏的另一个常用的技术就是Deferred Rendering。通常在渲染前会有一个Pass使用Compute Shader来计算哪些光源影响了屏幕中的每个像素，这一步也可以使用Async Compute加速。
+
+需要注意让Graphic Queue和Compute Queue利用不同的GPU资源，下图中Shadow maps的瓶颈在光栅化这些固定功能单元，这时执行计算任务是很合适的。
+
+![](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/Render%20Graph%E7%AC%94%E8%AE%B0/async1.png?raw=true)
+
+![](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/Render%20Graph%E7%AC%94%E8%AE%B0/async2.png?raw=true)
+
+![](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/Render%20Graph%E7%AC%94%E8%AE%B0/async3.png?raw=true)
+
