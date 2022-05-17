@@ -25,5 +25,9 @@ Render Graph不会立刻执行渲染命令，而是先记录完整帧命令之�
 Engine本质上就是Command Processor，它们可以并行处理命令，3D Engine执行的就是正常的Graphic Pipeline，包括VS、光栅化、PS等；Compute Engine执行的是Compute Pipeline，只有一个阶段：Compute Shader；Copy Engine用来拷贝资源。
 
 ```
-每个厂商实现这个功能的方法可能很不一样，AMD的GCN（Graphics Core Next）架构使用一个叫做“Asynchronous Compute Engine”来处理[1]，NVIDIA的Pascal架构用的是“Dynamic Load Balancing”[2]，Arm使用两个Queue，一个Queue处理Vertex、Tiling、Compute，另一个处理Fragment[3]，PC和Mobile的Async Compute有比较大的区别，实现时需要针对目标平台。图形API提供了Async Compute的功能，运行时GPU也得支持Async Compute才能得到性能的提升。
+每个厂商实现这个功能的方法可能很不一样，AMD的GCN（Graphics Core Next）架构使用一个叫做“Asynchronous Compute Engine”来处理[1]
+NVIDIA的Pascal架构用的是“Dynamic Load Balancing”[2]
+Arm使用两个Queue，一个Queue处理Vertex、Tiling、Compute，另一个处理Fragment[3]
+PC和Mobile的Async Compute有比较大的区别，实现时需要针对目标平台。
+图形API提供了Async Compute的功能，运行时GPU也得支持Async Compute才能得到性能的提升。
 ```
