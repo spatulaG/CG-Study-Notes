@@ -1,6 +1,10 @@
 # 自用图形学笔记
 
 # 目录
+## 0. 游戏引擎开发基础 vol.1 数学基础
+- 书的链接：[《Foundation of Game Engine Development, Vol 1》](https://foundationsofgameenginedev.com/)
+- [我的笔记]()
+- woohoo第一本刚刚收到了！！！！准备穿插着第二本看:D
 
 ## 1. 游戏引擎开发基础 vol.2 渲染
 - 书的链接：[《Foundation of Game Engine Development, Vol 2》](https://foundationsofgameenginedev.com/)
