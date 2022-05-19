@@ -72,3 +72,34 @@ Unity HDRP在Shadow Map时做了Async Compute，包括Build Lighting List、SSR�
 - 如果Producer Pass在当前Pass之前，同时Producer Pass和当前Pass不在同一个Queue中，就更新同步点
 
 同步点计算完成后，在执行Render Pass之前如果需要同步就会调用WaitOnAsyncGraphicsFence进行同步，在执行Render Pass之后如果有Pass需要同步就会Signal一个Fence。
+
+## Resource Barrier(Memory Barrier)
+Barrier用于保证两个job的先后顺序。GPU的两种同步分别是执行同步和资源同步。前面说到的async queue就是执行同步。数据同步需要用api控制，也隐式地保证了执行同步。
+数据同步分为三方面：
+- 读写顺序
+- Cache
+- Resource State Transition
+
+读写顺序其实是执行同步，比如一个dispatch写入一个资源然后下一个读取。保证两个的顺序在两者之间插入barrier。
+
+GPU换从光执行同步不够，例如当数据写入后还没有刷新，Cache就不available。Cache内容是latest的时候就是Available，如果在待定管线阶段就已经available那么这个内存就是visible。flush Cache就是让内存avail， invalidate cache就是让它visible。
+
+Resource state可以看作是GPU如何访问一个资源的描述。Resource State Transition指一个资源在不同用途的layout不同。同一个内存不同用处是alias。例如buffer一般是线性的，render target就会一个个block。一些硬件是压缩的格式写入数据，但是只能解压的格式读取。Transition之前必须available，Transition一般发生在L2 Cache。
+
+## Barrier 优化
+由于Barrier会导致Cache Flush和State Transition，所以多个Barrier最好合并到一起提交。同步的关键就是只在需要的时候才同步，所以应该尽量减少Barrier，比如Read to Read的Barrier就可以把多个Read状态合并到一起。可以利用隐式的Promotion和Decay，隐式的Promotion和Decay意思是runtime和Driver什么事都不用干，如果一个Common状态的资源，没有等待的Write操作、Cache flush、Layout Change，并且当前的Layout可以被任何Read操作读取，那么这个资源就不需要Transition，Read操作会把资源隐式的Promote到对应的状态。
+
+另一个优化就是把Barrier这堵墙拆成两半，在这两半之间的任务可以并行，也就提高了并行度。
+
+Barrier可以指定srcStageMask和dstStageMask，srcStageMask是需要等待的阶段，dstStageMask是墙的另一半，srcStageMask之前的任务需要在dstStageMask之后的任务开始之前完成。比如在延迟渲染中，在第一个Pass写入G-buffer，在第二个Pass中对它们采样，这时就需要一个Barrier。最简单的方法就是用一个非常保守的Barrier，它会阻塞所有的阶段。这样对性能有很大的影响，因为这会在两个Pass之间使Pipeline Flush。如果第二个Pass只需要在Fragment Shading时采样G-buffer，我们就可以使用一个更宽松的Barrier。
+（COLOR_ATTACHMENT_OUTPUT_BIT → FRAGMENT_SHADER_BIT）。这样的Barrier可以让GPU把第一个Pass和第二个Pass的Vertex Shading等阶段并行。这个功能在D3D12中就是各种不同的Read State，比如D3D12_RESOURCE_STATE_NON_PIXEL_SHADER、D3D12_RESOURCE_STATE_PIXEL_SHADER。
+
+拆墙还有另一种方法，Vulkan中是Event，D3D12中叫做Split Barrier。Split Barrier让GPU直到一个处于A状态的资源以后要以B状态来使用，Split Barrier分为Begin和End，Begin Barrier提交后这个资源就不能被访问了，在Begin Barrier和End Barrier之间的其他任务就可以填充Barrier导致的Bubble，提高利用率。Render Graph可以自动管理Resource Barrier并进行优化，最小化Barrier的数量，尽早开始Barrier，把多个Barrier合并提交，这样降低了出错的概率，使代码更清晰，开发者可以专注图形特性的开发。
+
+比如下图的例子，绿线表示Read，红线表示Write，Render Graph可以计算出优化的Barrier，例如Resource A在Pass1中作为Shader Resource使用，在Pass2中作为Render Target使用，那么这两个Pass之间就需要一个Barrier，如果这两个Pass都把Resource A当成Shader Resource使用，那就不需要任何Barrier了。
+
+![v2-432ef1df5e47fba989672506698fdfb4_1440w](https://user-images.githubusercontent.com/29577919/169248572-94e672f8-4d65-4bf4-a4bb-5436ce206904.png)
+
+比如图的例子，绿线表示Read，红线表示Write，Render Graph可以计算出优化的Barrier，例如Resource A在Pass1中作为Shader Resource使用，在Pass2中作为Render Target使用，那么这两个Pass之间就需要一个Barrier，如果这两个Pass都把Resource A当成Shader Resource使用，那就不需要任何Barrier了。
+
+
