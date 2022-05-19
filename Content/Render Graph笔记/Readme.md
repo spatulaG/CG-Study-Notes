@@ -102,4 +102,62 @@ Barrier可以指定srcStageMask和dstStageMask，srcStageMask是需要等待的�
 
 比如图的例子，绿线表示Read，红线表示Write，Render Graph可以计算出优化的Barrier，例如Resource A在Pass1中作为Shader Resource使用，在Pass2中作为Render Target使用，那么这两个Pass之间就需要一个Barrier，如果这两个Pass都把Resource A当成Shader Resource使用，那就不需要任何Barrier了。
 
+还可以把Render Pass按照Dependency Level划分，同一个Dependency Level中的Pass之间没有依赖关系，这些Pass可以并行，所以在每个Dependency Level的末尾可以提交所有Barrier。
 
+## Memory Aliasing
+
+Render Graph可以实现高效的内存管理。Render Graph提供的创建资源接口没有真正创建资源，而是返回一个Handle表示这个资源，Render Graph会使用整帧的信息计算资源的生命周期，实际用到的资源才会分配内存，这样就不用自己实现复杂的资源管理逻辑，还能利用memory aliasing高效的复用内存。
+
+渲染引擎中的典型的一帧是：Pre Z Pass、渲染GBuffer、Lighting、Postprocessing。每个阶段的输出会写入texture或buffer，然后被其他阶段使用。这里观察到的一个现象是一个阶段的输出只会被少数几个阶段使用。比如在后处理中：Bloom的输出只会被下一个阶段Tone mapping使用。在一帧中很多资源的有效生命周期很短，但是会提前分配内存并在整帧中占用。现在的渲染引擎会使用大量的资源，不进行优化就会导致惨不忍睹的结果。
+
+首先想到的方法是在使用这个资源时进行分配，使用完后就释放，这样是可以优化内存的大小，但是分配、释放内存是个很慢的操作，在渲染时频繁的分配、释放就更影响性能了。
+
+解决内存频繁分配释放的方法就是对象池，Unity的RenderTexture.GetTemporary就是在内部维护了一个RenderTexture的对象池。但是这种方法只适用于后处理阶段，因为不同格式、大小的资源不能复用，后处理通常是全屏的Pass，读取、写入的Texture通常都有相同的属性，一些简单的后处理只需要两个RT反复交替使用就能实现。
+
+对象池本质上是一种上层的memory aliasing，传统API中开发者不需要关注内存管理，也没办法，现代图形API提供了内存管理的接口，可以实现底层的memory aliasing。memory aliasing指的是不同变量指向同一地址的现象，在这里指的是在同一片内存区域中同时存放多个资源，也有的叫resource aliasing、resource overlap。如果有很多大型资源在时间上不会重叠，就可以在相同的内存分配这些资源，memory aliasing相比对象池可以进一步降低内存占用，因为不需要考虑资源的类型、格式、大小等待，在底层都是一堆字节。使用Render Graph在声明一个Render Pass时需要声明该Pass使用的资源，所以我们可以计算出这一帧使用的所有资源的生命周期，这样就可以很容易实现Memory Aliasing
+
+不过使用memory aliasing需要很小心，需要合适的同步处理，让API知道aliasing的情况，Vulkan使用memory barrier，D3D12使用aliasing barrier，把aliasing barrier和其他transition barrier也是一个优化，还应该把aliasing的资源当成未初始化的。Frostbite的分享中使用memory aliasing后内存从147M降到了80M左右：
+
+![v2-367c9ab9e0cd9b0302a6b381bceb11c9_1440w](https://user-images.githubusercontent.com/29577919/169249668-2bd9e297-7c2f-4d1e-b5bf-70789439a698.jpg)
+
+![v2-83ad0fe464a383c0c60d050e1e25d6ef_1440w](https://user-images.githubusercontent.com/29577919/169249684-2aadfc1b-7220-4acf-95c1-f9f9884d17d1.jpg)
+
+## 引用
+
+[1]http://developer.amd.com/wordpress/media/2012/10/Asynchronous-Shaders-White-Paper-FINAL.pdf
+
+[2]http://international.download.nvidia.com/geforce-com/international/pdfs/GeForce_GTX_1080_Whitepaper_FINAL.pdf
+
+[3]https://community.arm.com/developer/tools-software/graphics/b/blog/posts/using-compute-post-processing-in-vulkan-on-mali
+
+[4]https://community.arm.com/developer/tools-software/graphics/b/blog/posts/using-asynchronous-compute-on-arm-mali-gpus
+
+[5]https://linustechtips.com/blogs/entry/1595-explaining-asynchronous-compute/
+
+[6]https://bth.diva-portal.org/smash/get/diva2:1439826/FULLTEXT01.pdf
+
+[7]https://github.com/KhronosGroup/Vulkan-Samples/blob/master/samples/performance/async_compute/async_compute_tutorial.md
+
+[8]https://en.wikipedia.org/wiki/Aliasing_(computing)
+
+[9]https://zhuanlan.zhihu.com/p/72894705
+
+[10]https://levelup.gitconnected.com/gpu-memory-aliasing-45933681a15e
+
+[11]https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/resource_aliasing.html
+
+[12]https://www.khronos.org/registry/vulkan/specs/1.1/html/chap12.html#resources-memory-aliasing
+
+[13]https://asawicki.info/articles/memory_management_vulkan_direct3d_12.php5
+
+barrier
+
+[14]https://therealmjp.github.io/posts/breaking-down-barriers-part-1-whats-a-barrier/
+
+[15]https://devblogs.microsoft.com/directx/a-look-inside-d3d12-resource-state-barriers/
+
+[16]https://themaister.net/blog/2019/08/14/yet-another-blog-explaining-vulkan-synchronization/
+
+[17]https://cpp-rendering.io/barriers-vulkan-not-difficult/
+
+[18]https://logins.github.io/graphi
