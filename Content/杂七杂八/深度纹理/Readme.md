@@ -78,7 +78,7 @@ NDC坐标是裁剪空间坐标经过齐次除法得到的，所以有：
 
 Unity的观察空间是右手坐标系，这里求出的Zview是负值，Linear01Depth和LinearEyeDepth会返回正值。
 
-## 重建世界坐标
+## 1.重建世界坐标
 首先求出NDC坐标，xy通过VS输出的齐次坐标求出，z通过采样深度纹理得出：
 ```
 // VS
@@ -107,6 +107,99 @@ World和Clip的关系:
 
 ![image](https://user-images.githubusercontent.com/29577919/169684342-ef6739a9-4e47-4d67-9f33-1a507c163b8d.png)
 所以世界坐标就等于NDC坐标进行VP逆变换之后再除以w。
+
+## 2.射线法
+![image](https://user-images.githubusercontent.com/29577919/169684451-e8e51265-4e9e-4ebd-859f-9674cc8e7a21.png)
+根据Camera的信息，求出世界空间中Camera到远平面四个角的向量
+根据Camera的fov和farPlane求出远平面的宽高的一半（这里以透视相机为例）：
+
+```
+float halfFarPlaneHeight = m_Camera.farClipPlane * Mathf.Tan(m_Camera.fieldOfView  / 2 * Mathf.Deg2Rad);
+float halfFarPlaneWidth = halfFarPlaneHeight * m_Camera.aspect;
+如果所示，相机到远平面右上角的向量topRight = C_F + F_R + R_TR
+```
+
+```
+Vector4 CF = m_Camera.transform.forward * m_Camera.farClipPlane;
+Vector4 R_TR = m_Camera.transform.up * halfFarPlaneHeight;
+Vector4 FR = m_Camera.transform.right * halfFarPlaneWidth;
+
+Vector4 topRight = CF + FR + R_TR;
+```
+
+依次求出四个角，传入到Shader中，进行类似后处理时，屏幕的四个点对应远平面的四个点，在Shader中根据UV算出index，获取对应的向量：
+```
+// VS
+index = v.uv.x + (2 * v.uv.y);
+o.farPlaneVector = _FarPlaneVector[index];
+```
+经过插值输入到PS中就是相机摄像当前像素的向量CG（起点是相机，终点在远平面上）
+```
+// FS
+float depthInBuffer = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
+float linear01Depth = Linear01Depth(depthInBuffer);
+float3 worldPos = _WorldSpaceCameraPos + i.farPlaneVector * linear01Depth;
+```
+
+## 3.NDC逆变换法
+当渲染场景中的物体时，上面这种做法就不适用了，我们还可以使用NDC坐标来求出这条射线。
+![image](https://user-images.githubusercontent.com/29577919/169684509-45933ceb-5175-404c-a24c-116d78fcd260.png)
+
+首先计算出NDC坐标，ComputeScreenPos会处理不同平台UV的差异：
+```
+// VS
+float4 screenPos = ComputeScreenPos(o.vertex);
+float4 ndcPos = (o.screenPos / o.screenPos.w) * 2 - 1;
+```
+然后计算出Clip空间中，这条射线落在远平面的坐标：
+```
+// VS
+float far = _ProjectionParams.z;
+float4 clipPos = float4(ndcPos.x * far, ndcPos.y * far, far, far);
+```
+然后乘以VP矩阵的逆矩阵，计算出View空间中，这条射线落在远平面的坐标G：
+```
+// VS
+float3 viewPos = mul(unity_CameraInvProjection, clipPos).xyz;
+所以CG向量就是viewPos（起点在原点）：
+```
+```
+// VS
+float3 farPlaneVectorView = viewPos;
+```
+再把这个向量转换到世界空间：
+
+```
+// VS
+o.farPlaneVector = mul(UNITY_MATRIX_I_V, float4(farPlaneVectorView, 0)).xyz;
+```
+剩下的处理就跟上面的方法一样了。
+```
+// FS
+float depthInBuffer = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
+float linear01Depth = Linear01Depth(depthInBuffer);
+float3 worldPos = _WorldSpaceCameraPos + i.farPlaneVector * linear01Depth;
+```
+## 4.直接相减法
+首先直接计算世界空间中Camera到顶点的向量：
+```
+float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+float3 worldSpaceViewVector = worldPos - _WorldSpaceCameraPos.xyz;
+```
+然后计算View空间下这个向量的深度值（View空间是右手坐标系，取正值）：
+```
+o.viewSpaceDepth = -mul(UNITY_MATRIX_V, float4(o.worldSpaceViewVector, 0.0)).z;
+```
+然后用当前顶点的深度和深度纹理中得到的深度的比例关系，求出向量：
+```
+float depthInBuffer = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
+float linearDepth = LinearDepth(depthInBuffer);
+
+float3 ray = i.worldSpaceViewVector * (linearDepth / i.viewSpaceDepth );
+float3 worldPos = _WorldSpaceCameraPos + ray;
+```
+
+
 
 ## Zview 到 Zclip的推导
 
