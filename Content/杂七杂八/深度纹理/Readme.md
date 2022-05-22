@@ -75,3 +75,9 @@ NDC坐标是裁剪空间坐标经过齐次除法得到的，所以有：
 代入Zclip和Zndc，可以求出：
 
 ![image](https://user-images.githubusercontent.com/29577919/169681804-f57ad9a6-b4f4-4a05-8ddb-50014638fd83.png)
+
+
+
+
+引用
+[opengl 透视投影矩阵的推导]https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix
