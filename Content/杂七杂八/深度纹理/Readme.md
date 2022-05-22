@@ -50,22 +50,22 @@ inline float LinearEyeDepth( float z )
 
 采样得到的深度值范围是0~1，NDC空间下深度值范围是-1~1，所以有：
 
-[公式]
+![image](https://user-images.githubusercontent.com/29577919/169681794-0804dea3-f8ff-4fde-9fe7-0d2d6b5c28cd.png)
 
 NDC坐标是裁剪空间坐标经过齐次除法得到的，所以有：
 
-[公式]
+![image](https://user-images.githubusercontent.com/29577919/169681798-217ae5c5-688f-4131-a41b-52ca0bdb3881.png)
 
 定义Far为远平面距离，Near为近平面距离，根据投影变换，可以得到Zclip和Zview的计算公式：
 
-[公式]
+![image](https://user-images.githubusercontent.com/29577919/169681800-21abe9d8-5251-467b-9436-3af1019b5399.png)
 
-[公式]
+![image](https://user-images.githubusercontent.com/29577919/169681801-72fab073-fd23-4f77-9b77-e284c020806e.png)
 
 所以反过来可以得出Zview和Zclip的关系：
 
-[公式]
+![image](https://user-images.githubusercontent.com/29577919/169681803-749a4010-99fb-4727-89eb-85811bd796bc.png)
 
 代入Zclip和Zndc，可以求出：
 
-[公式]
+![image](https://user-images.githubusercontent.com/29577919/169681804-f57ad9a6-b4f4-4a05-8ddb-50014638fd83.png)
