@@ -51,6 +51,8 @@ inline float LinearEyeDepth( float z )
 }
 ```
 
+NDC的Z是[-w,w], 
+
 
 采样得到的深度值范围是0 ~ 1，NDC空间下深度值范围是-1 ~ 1，所以有：
 
