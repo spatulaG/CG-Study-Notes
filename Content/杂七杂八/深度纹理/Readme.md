@@ -76,6 +76,26 @@ NDC坐标是裁剪空间坐标经过齐次除法得到的，所以有：
 
 ![image](https://user-images.githubusercontent.com/29577919/169681804-f57ad9a6-b4f4-4a05-8ddb-50014638fd83.png)
 
+Unity的观察空间是右手坐标系，这里求出的Zview是负值，Linear01Depth和LinearEyeDepth会返回正值。
+
+## 重建世界坐标
+首先求出NDC坐标，xy通过VS输出的齐次坐标求出，z通过采样深度纹理得出：
+```
+// VS
+o.screenPos = ComputeScreenPos(o.vertex);
+
+// FS
+float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
+float4 ndc = float4(i.screenPos.x / i.screenPos.w, i.screenPos.y / i.screenPos.w, depth, 1);
+```
+再经过View、Projection的逆变换就能得到世界坐标：
+```
+// FS
+float4 worldPosHomog = mul(_InverseViewProjectionMatrix, ndc);
+float4 worldPos = worldPosHomog / worldPosHomog.w;
+```
+
+
 
 ## Zview 到 Zclip的推导
 
