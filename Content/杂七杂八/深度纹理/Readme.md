@@ -62,7 +62,7 @@ NDC坐标是裁剪空间坐标经过齐次除法得到的，所以有：
 
 ![image](https://user-images.githubusercontent.com/29577919/169681798-217ae5c5-688f-4131-a41b-52ca0bdb3881.png)
 
-定义Far为远平面距离，Near为近平面距离，根据投影变换，可以得到Zclip和Zview的计算公式：
+定义Far为远平面距离，Near为近平面距离，根据投影变换，可以得到Zclip和Zview的计算公式：[推导在这里]
 
 ![image](https://user-images.githubusercontent.com/29577919/169681800-21abe9d8-5251-467b-9436-3af1019b5399.png)
 
@@ -77,7 +77,21 @@ NDC坐标是裁剪空间坐标经过齐次除法得到的，所以有：
 ![image](https://user-images.githubusercontent.com/29577919/169681804-f57ad9a6-b4f4-4a05-8ddb-50014638fd83.png)
 
 
+## Zview 到 Zclip的推导
 
+![image](https://user-images.githubusercontent.com/29577919/169683913-2f170b91-5b65-4000-9363-4e42d376c60d.png)
+![image](https://user-images.githubusercontent.com/29577919/169683916-f69bf0a1-e2bb-4f5e-83b1-c4387886383e.png)
+### 横轴的推导
+![image](https://user-images.githubusercontent.com/29577919/169683949-5864d77f-9270-4716-b599-1f38dab1eccd.png)
+![image](https://user-images.githubusercontent.com/29577919/169683946-d3368dfe-19af-4102-8db2-0d4c5471313e.png)
+### 同理， 由此我们已经有了xy的矩阵
+![image](https://user-images.githubusercontent.com/29577919/169683972-c710fa5f-1f91-4edb-be84-153daa4a3e11.png)
+### Z的推导稍微不一样一点因为Z是n到f之间
+![image](https://user-images.githubusercontent.com/29577919/169683981-531c9ce3-07fb-4e07-9846-b05fc1059f20.png)
+![image](https://user-images.githubusercontent.com/29577919/169683991-b9a65e7c-38fa-4355-8db3-1f472a2fc718.png)
+![image](https://user-images.githubusercontent.com/29577919/169683995-f5079afe-1709-4706-a315-4bc9479e96cc.png)
+### 那么最终矩阵是
+![image](https://user-images.githubusercontent.com/29577919/169684003-2af79d2b-e30f-416a-8e93-e829e21274b2.png)
 
-引用
+## 引用
 [opengl 透视投影矩阵的推导](https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix)
