@@ -31,9 +31,11 @@ inline float4 EncodeFloatRGBA(float v)
     return float4(eb[0] / 255.0f, eb[1] / 255.0f, eb[2] / 255.0f, eb[3] / 255.0f);
 }
 ```
+
 Linear01Depth会返回View空间中范围在(0，1]的深度，近平面为Near/Far，远平面为1。
 
 LinearEyeDepth会返回View空间中的深度，近平面为Near，远平面为Far。
+
 ···
 // Z buffer to linear 0..1 depth
 inline float Linear01Depth( float z )
