@@ -12,7 +12,7 @@
 - 这本看了下好像还没有人翻译，我读起来比较吃力所以干脆把自己笔记放网上方便引用。
 
 ## 2. 杂七杂八
-- [Render Graph 笔记]([https://github.com/spatulaG/CG-Study-Notes/tree/main/Content/Render%20Graph%E7%AC%94%E8%AE%B0](https://github.com/spatulaG/CG-Study-Notes/tree/main/Content/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/Render%20Graph%E7%AC%94%E8%AE%B0))
+- [Render Graph 笔记](https://github.com/spatulaG/CG-Study-Notes/tree/main/Content/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/Render%20Graph%E7%AC%94%E8%AE%B0)
 - 深度纹理算法
 - Unity工具开发
 
