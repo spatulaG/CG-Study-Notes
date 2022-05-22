@@ -18,7 +18,9 @@ inline float DecodeFloatRGBA( float4 enc )
     return dot( enc, kDecodeDot );
 }
 ```
+
 做的就是：
+
 ```
 inline float4 EncodeFloatRGBA(float v)
 {
@@ -36,7 +38,7 @@ Linear01Depth会返回View空间中范围在(0，1]的深度，近平面为Near/
 
 LinearEyeDepth会返回View空间中的深度，近平面为Near，远平面为Far。
 
-···
+```
 // Z buffer to linear 0..1 depth
 inline float Linear01Depth( float z )
 {
@@ -47,7 +49,7 @@ inline float LinearEyeDepth( float z )
 {
     return 1.0 / (_ZBufferParams.z * z + _ZBufferParams.w);
 }
-···
+```
 
 
 采样得到的深度值范围是0 ~ 1，NDC空间下深度值范围是-1 ~ 1，所以有：
