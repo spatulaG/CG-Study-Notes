@@ -104,6 +104,10 @@ World和Clip的关系:
 所以
 ![image](https://user-images.githubusercontent.com/29577919/169684288-996f7ed5-8dbd-4e1b-ba5c-5b692c17ac5e.png)
 
+
+![image](https://user-images.githubusercontent.com/29577919/169684342-ef6739a9-4e47-4d67-9f33-1a507c163b8d.png)
+所以世界坐标就等于NDC坐标进行VP逆变换之后再除以w。
+
 ## Zview 到 Zclip的推导
 
 ![image](https://user-images.githubusercontent.com/29577919/169683913-2f170b91-5b65-4000-9363-4e42d376c60d.png)
