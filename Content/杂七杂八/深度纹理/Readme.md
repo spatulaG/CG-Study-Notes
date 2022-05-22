@@ -80,4 +80,4 @@ NDC坐标是裁剪空间坐标经过齐次除法得到的，所以有：
 
 
 引用
-[opengl 透视投影矩阵的推导]https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix
+[opengl 透视投影矩阵的推导](https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix)
