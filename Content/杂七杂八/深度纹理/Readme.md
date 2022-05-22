@@ -62,7 +62,7 @@ NDC坐标是裁剪空间坐标经过齐次除法得到的，所以有：
 
 ![image](https://user-images.githubusercontent.com/29577919/169681798-217ae5c5-688f-4131-a41b-52ca0bdb3881.png)
 
-定义Far为远平面距离，Near为近平面距离，根据投影变换，可以得到Zclip和Zview的计算公式：[推导在这里]
+定义Far为远平面距离，Near为近平面距离，根据投影变换，可以得到Zclip和Zview的计算公式：[推导在这里](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/%E6%B7%B1%E5%BA%A6%E7%BA%B9%E7%90%86/Readme.md#zview-%E5%88%B0-zclip%E7%9A%84%E6%8E%A8%E5%AF%BC)
 
 ![image](https://user-images.githubusercontent.com/29577919/169681800-21abe9d8-5251-467b-9436-3af1019b5399.png)
 
