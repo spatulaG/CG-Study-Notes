@@ -48,7 +48,7 @@ inline float LinearEyeDepth( float z )
 ···
 
 
-采样得到的深度值范围是0~1，NDC空间下深度值范围是-1~1，所以有：
+采样得到的深度值范围是0 ~ 1，NDC空间下深度值范围是-1 ~ 1，所以有：
 
 ![image](https://user-images.githubusercontent.com/29577919/169681794-0804dea3-f8ff-4fde-9fe7-0d2d6b5c28cd.png)
 
