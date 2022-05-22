@@ -95,7 +95,14 @@ float4 worldPosHomog = mul(_InverseViewProjectionMatrix, ndc);
 float4 worldPos = worldPosHomog / worldPosHomog.w;
 ```
 
+NDC和Clip坐标的关系：
+![image](https://user-images.githubusercontent.com/29577919/169684283-3ad895a6-9aa4-442d-99d1-d3997ebf2705.png)
 
+World和Clip的关系:
+![image](https://user-images.githubusercontent.com/29577919/169684279-50316ef7-f308-40cd-a7e5-a336a6ba0850.png)
+
+所以
+![image](https://user-images.githubusercontent.com/29577919/169684288-996f7ed5-8dbd-4e1b-ba5c-5b692c17ac5e.png)
 
 ## Zview 到 Zclip的推导
 
