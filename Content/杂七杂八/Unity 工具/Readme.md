@@ -69,7 +69,19 @@ private void Awake()
         ApplyColor();
     }
 ```
+## 生成自定义asset类型
+![image](https://user-images.githubusercontent.com/29577919/169767541-890bac77-ea91-44a8-a0b8-f0be27e2db22.png)
 
+```
+public class BarrelType : ScriptableObject
+{
+    [Range(1f, 8f)]
+    public float radius = 1;
+
+    public float damage = 10f;
+    public Color color = Color.red;
+}
+```
 
 ## Property 的使用
 ```
