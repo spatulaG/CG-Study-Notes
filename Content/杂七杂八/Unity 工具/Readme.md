@@ -28,3 +28,16 @@ void OnDrawGizmosSelected()
         }
     }
 ```
+生成动态材质
+```
+private void Awake()
+    {
+        Shader shader = Shader.Find("Default");
+        Material mat = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };// will destroy upon exit
+        
+        // duplicate Material = extra draw call, can't batch, leak
+        GetComponent<MeshRenderer>().material.color = Color.red;
+        // will modify asset
+        GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
+    }
+```
