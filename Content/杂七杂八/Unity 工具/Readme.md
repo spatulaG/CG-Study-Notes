@@ -41,6 +41,36 @@ private void Awake()
         GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
     }
 ```
+
+![image](https://user-images.githubusercontent.com/29577919/169761986-a17732f6-7c88-4e9a-92ee-8e513430554a.png)
+## 添加颜色
+
+···
+ MaterialPropertyBlock mpb;
+    static readonly int shPropColor = Shader.PropertyToID("_Color");
+    public MaterialPropertyBlock Mpb
+    {
+        get {
+            if (mpb == null) 
+                mpb = new MaterialPropertyBlock();
+            return mpb;
+        }
+    }
+
+    void ApplyColor()
+    {
+        MeshRenderer rnd = GetComponent<MeshRenderer>();
+        Mpb.SetColor(shPropColor, color);
+        rnd.SetPropertyBlock(Mpb);
+    }
+
+    private void OnValidate()// everytime it detects changes
+    {
+        ApplyColor();
+    }
+···
+
+
 ## Property 的使用
 ```
 外部脚本只能访问而不能修改其值
