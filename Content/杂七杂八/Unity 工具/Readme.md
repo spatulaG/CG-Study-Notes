@@ -1,3 +1,5 @@
+视频链接 https://www.youtube.com/watch?v=pZ45O2hg_30
+ 
 ![image](https://user-images.githubusercontent.com/29577919/169755513-dbdb70e2-f220-4182-809d-0dfffb943d4a.png)
 - 在onenable和disable的时候自动加入static组
 - execute always可以在不play的时候也运行
