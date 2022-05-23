@@ -41,3 +41,22 @@ private void Awake()
         GetComponent<MeshRenderer>().sharedMaterial.color = Color.red;
     }
 ```
+## Property 的使用
+```
+外部脚本只能访问而不能修改其值
+    public bool IsGameOver { get; private set; } // 设为 auto property
+或
+    public bool IsGameOver
+    {
+        get
+        {
+            return isGameOver; // 读取对应数值
+        }
+
+        set
+        {
+            isGameOver = value; // 赋值操作，这里 value 的数据类型需要和目标一致，这里为 bool
+        }
+
+    }
+```
