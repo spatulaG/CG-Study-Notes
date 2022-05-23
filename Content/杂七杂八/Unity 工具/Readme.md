@@ -68,14 +68,14 @@ private void Awake()
     {
         ApplyColor();
     }
-···
+```
 
 
 ## Property 的使用
 ```
-外部脚本只能访问而不能修改其值
+//外部脚本只能访问而不能修改其值
     public bool IsGameOver { get; private set; } // 设为 auto property
-或
+//或
     public bool IsGameOver
     {
         get
