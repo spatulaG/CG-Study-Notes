@@ -1,5 +1,5 @@
 Unity里的转换代码（不好
-```
+```c#
 UnityCG.cginc
 
 // Encoding/decoding [0..1) floats into 8 bit/channel RGBA. Note that 1.0 will not  be encoded properly.
@@ -21,7 +21,7 @@ inline float DecodeFloatRGBA( float4 enc )
 
 做的就是：
 
-```
+```c#
 inline float4 EncodeFloatRGBA(float v)
 {
     byte[] eb = BitConverter.GetBytes(v);
@@ -38,7 +38,7 @@ Linear01Depth会返回View空间中范围在(0，1]的深度，近平面为Near/
 
 LinearEyeDepth会返回View空间中的深度，近平面为Near，远平面为Far。
 
-```
+```c#
 // Z buffer to linear 0..1 depth
 inline float Linear01Depth( float z )
 {
@@ -80,7 +80,7 @@ Unity的观察空间是右手坐标系，这里求出的Zview是负值，Linear0
 
 ## 1.重建世界坐标
 首先求出NDC坐标，xy通过VS输出的齐次坐标求出，z通过采样深度纹理得出：
-```
+```c#
 // VS
 o.screenPos = ComputeScreenPos(o.vertex);
 
@@ -89,7 +89,7 @@ float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
 float4 ndc = float4(i.screenPos.x / i.screenPos.w, i.screenPos.y / i.screenPos.w, depth, 1);
 ```
 再经过View、Projection的逆变换就能得到世界坐标：
-```
+```c#
 // FS
 float4 worldPosHomog = mul(_InverseViewProjectionMatrix, ndc);
 float4 worldPos = worldPosHomog / worldPosHomog.w;
@@ -113,13 +113,13 @@ World和Clip的关系:
 根据Camera的信息，求出世界空间中Camera到远平面四个角的向量
 根据Camera的fov和farPlane求出远平面的宽高的一半（这里以透视相机为例）：
 
-```
+```c#
 float halfFarPlaneHeight = m_Camera.farClipPlane * Mathf.Tan(m_Camera.fieldOfView  / 2 * Mathf.Deg2Rad);
 float halfFarPlaneWidth = halfFarPlaneHeight * m_Camera.aspect;
 如果所示，相机到远平面右上角的向量topRight = C_F + F_R + R_TR
 ```
 
-```
+```c#
 Vector4 CF = m_Camera.transform.forward * m_Camera.farClipPlane;
 Vector4 R_TR = m_Camera.transform.up * halfFarPlaneHeight;
 Vector4 FR = m_Camera.transform.right * halfFarPlaneWidth;
@@ -128,13 +128,13 @@ Vector4 topRight = CF + FR + R_TR;
 ```
 
 依次求出四个角，传入到Shader中，进行类似后处理时，屏幕的四个点对应远平面的四个点，在Shader中根据UV算出index，获取对应的向量：
-```
+```c#
 // VS
 index = v.uv.x + (2 * v.uv.y);
 o.farPlaneVector = _FarPlaneVector[index];
 ```
 经过插值输入到PS中就是相机摄像当前像素的向量CG（起点是相机，终点在远平面上）
-```
+```c#
 // FS
 float depthInBuffer = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
 float linear01Depth = Linear01Depth(depthInBuffer);
@@ -146,35 +146,35 @@ float3 worldPos = _WorldSpaceCameraPos + i.farPlaneVector * linear01Depth;
 ![image](https://user-images.githubusercontent.com/29577919/169684509-45933ceb-5175-404c-a24c-116d78fcd260.png)
 
 首先计算出NDC坐标，ComputeScreenPos会处理不同平台UV的差异：
-```
+```c#
 // VS
 float4 screenPos = ComputeScreenPos(o.vertex);
 float4 ndcPos = (o.screenPos / o.screenPos.w) * 2 - 1;
 ```
 然后计算出Clip空间中，这条射线落在远平面的坐标：
-```
+```c#
 // VS
 float far = _ProjectionParams.z;
 float4 clipPos = float4(ndcPos.x * far, ndcPos.y * far, far, far);
 ```
 然后乘以VP矩阵的逆矩阵，计算出View空间中，这条射线落在远平面的坐标G：
-```
+```c#
 // VS
 float3 viewPos = mul(unity_CameraInvProjection, clipPos).xyz;
 所以CG向量就是viewPos（起点在原点）：
 ```
-```
+```c#
 // VS
 float3 farPlaneVectorView = viewPos;
 ```
 再把这个向量转换到世界空间：
 
-```
+```c#
 // VS
 o.farPlaneVector = mul(UNITY_MATRIX_I_V, float4(farPlaneVectorView, 0)).xyz;
 ```
 剩下的处理就跟上面的方法一样了。
-```
+```c#
 // FS
 float depthInBuffer = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
 float linear01Depth = Linear01Depth(depthInBuffer);
@@ -182,16 +182,16 @@ float3 worldPos = _WorldSpaceCameraPos + i.farPlaneVector * linear01Depth;
 ```
 ## 4.直接相减法
 首先直接计算世界空间中Camera到顶点的向量：
-```
+```c#
 float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 float3 worldSpaceViewVector = worldPos - _WorldSpaceCameraPos.xyz;
 ```
 然后计算View空间下这个向量的深度值（View空间是右手坐标系，取正值）：
-```
+```c#
 o.viewSpaceDepth = -mul(UNITY_MATRIX_V, float4(o.worldSpaceViewVector, 0.0)).z;
 ```
 然后用当前顶点的深度和深度纹理中得到的深度的比例关系，求出向量：
-```
+```c#
 float depthInBuffer = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
 float linearDepth = LinearDepth(depthInBuffer);
 
