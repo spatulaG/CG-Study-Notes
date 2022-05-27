@@ -4,14 +4,14 @@
 - 在onenable和disable的时候自动加入static组
 - execute always可以在不play的时候也运行
 
-```
+```c#
 //barrel
     private void OnEnable() => ExplosiveBarrelManager.allTheBarrels.Add(this); //use this to automate, very useful!
     private void OnDisable() => ExplosiveBarrelManager.allTheBarrels.Remove(this); //expression body members
 
     private void OnDrawGizmosSelected() => Gizmos.DrawWireSphere(transform.position, radius);
 ```
-```
+```c#
 //Manager
 void OnDrawGizmosSelected()
     {
@@ -29,7 +29,7 @@ void OnDrawGizmosSelected()
     }
 ```
 生成动态材质
-```
+```c#
 private void Awake()
     {
         Shader shader = Shader.Find("Default");
@@ -72,7 +72,7 @@ private void Awake()
 ## 生成自定义asset类型
 ![image](https://user-images.githubusercontent.com/29577919/169767541-890bac77-ea91-44a8-a0b8-f0be27e2db22.png)
 
-```
+```c#
 public class BarrelType : ScriptableObject
 {
     [Range(1f, 8f)]
@@ -84,7 +84,7 @@ public class BarrelType : ScriptableObject
 ```
 
 ## Property 的使用
-```
+```c#
 //外部脚本只能访问而不能修改其值
     public bool IsGameOver { get; private set; } // 设为 auto property
 //或
