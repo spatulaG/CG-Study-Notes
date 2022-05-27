@@ -82,24 +82,24 @@ R轴有负数
 - 然而我之前一直以为白点就是这么算出来的后来发现怎么算怎么不对， 原来我们不取1：1：1。
 
 • 等量的三色
-```
+```c++
 IEE(λ) = 1
 (xEE, yEE, zEE) = (1/3, 1/3, 1/3)
 ```
 
 • D65 光照 (PAL):
-```
+```c++
 I65(λ) = Natural Sun Light
 (x65, y65, z65) = (0.3127, 0.3290, 0.3583)
 ```
 
 • C 光照 (NTSC):
-```
+```c++
 Ic(λ) = not defined
 (xc, yc, zc) = (0.310, 0.316, 0.374)
 ```
 
-```
+```c++
 // 我们需要求解新的RGB颜色空间（sRGB）的三原色在XYZ颜色空间的索引值：
 Rxyz = (Rx, Ry, Rz)
 Gxyz = (Gx, Gy, Gz)
@@ -177,14 +177,14 @@ Dolby提出的PQ传递函数在12位精度下所得到的亮度差曲线，可�
 PQ传递函数输出的是一个范围在0到10000 cd/m²的绝对亮度值，而SDR输出的则是一个在0到1范围内的相对亮度值，SDR显示器显示的真正亮度值是未知的。这种确定性在我们debug时也很有帮助，例如PQ值为0.5时对应的亮度值大约为100尼特，它是老的LCD显示器常见的亮度峰值；PQ为0.75时对应的亮度值大约为1000尼特，它是一部分HDR TV显示器的亮度峰值。
 
 很多游戏引擎在HDR显示时都会先使用PQ传递函数把场景线性亮度值转换成0到1的编码值并以此来采样一张[3D LUT](https://github.com/spatulaG/CG-Study-Notes/blob/main/Content/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E5%9F%BA%E7%A1%80vol2-%E6%B8%B2%E6%9F%93/Content/misc/Readme.md#lut)做Color Grading和Tonemapping的操作。例如，UE4在为HDR显示计算3D LUT时会使用ST2084ToLinear进行解码来得到线性亮度值，并在此亮度值上做后续的颜色操作
-```
+```c++
 // Since ST2084 returns linear values in nits, divide by a scale factor to convert 
 // the reference nit result to be 1.0 in linear. 
 // (for efficiency multiply by precomputed inverse) 
 LinearColor = ST2084ToLinear(LUTEncodedColor) * LinearToNitsScaleInverse;
 ```
 在采样这张3D LUT时，会进行上述计算的反函数来把线性亮度值转换成0到1的纹理采样坐标：
-```
+```c++
 // ST2084 expects to receive linear values 0-10000 in nits. 
 // So the linear value must be multiplied by a scale factor to convert to nits. 
 float3 LUTEncodedColor = LinearToST2084(LinearColor * LinearToNitsScale);  
@@ -193,7 +193,7 @@ float3 UVW = LUTEncodedColor * ((LUTSize - 1) / LUTSize) + (0.5f / LUTSize);
 float3 OutDeviceColor = Texture3DSample( ColorGradingLUT, ColorGradingLUTSampler, UVW ).rgb; 
 ```
 上述PQ传递函数需要两次pow计算和一次rcp计算，在计算时要小心它的指令消耗：
-```
+```c++
 // Dolby PQ transforms 
 // 
 float3 ST2084ToLinear(float3 pq) 
