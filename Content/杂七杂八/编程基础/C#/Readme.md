@@ -1,5 +1,5 @@
 ## 究竟什么是序列化？
-```
+```c#
     public float thing;//serialized, visible, public 
     private float thing0;//not serialized, hidden, private
     [SerializeField] float thing1;//private, visible, serialized
