@@ -15,7 +15,7 @@
 - [Render Graph 笔记](https://github.com/spatulaG/CG-Study-Notes/tree/main/Content/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/Render%20Graph%E7%AC%94%E8%AE%B0)
 - [深度纹理算法](https://github.com/spatulaG/CG-Study-Notes/tree/main/Content/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/%E6%B7%B1%E5%BA%A6%E7%BA%B9%E7%90%86)
 - [Unity工具开发](https://github.com/spatulaG/CG-Study-Notes/tree/main/Content/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/Unity%20%E5%B7%A5%E5%85%B7)
-- 编程基础
+- [编程基础](https://github.com/spatulaG/CG-Study-Notes/tree/main/Content/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80)
 
 ## 3. Tile-based GPU[笔记]
 
