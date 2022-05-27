@@ -9,4 +9,14 @@
 
 - Stable, long-term data, opposite of runtime data
 - Subproperties should be serialized as well
-- No inheritance, polymorphism...
+- No inheritance, polymorphism... Serialized types are adhoc, no fancy referencing
+
+Different kinds of UI:
+
+explicit layout(Rect)
+- GUI
+- EditorGUI
+
+implicit auto layout
+- GUILayout
+- EditorGUILayout
