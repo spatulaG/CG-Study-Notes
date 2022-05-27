@@ -45,7 +45,7 @@ private void Awake()
 ## 添加颜色
 ![image](https://user-images.githubusercontent.com/29577919/169761986-a17732f6-7c88-4e9a-92ee-8e513430554a.png)
 
-```
+```c#
  MaterialPropertyBlock mpb;
     static readonly int shPropColor = Shader.PropertyToID("_Color");
     public MaterialPropertyBlock Mpb
