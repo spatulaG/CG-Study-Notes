@@ -1,4 +1,4 @@
-## 究竟什么是序列化？
+## 究竟什么是序列化？//懒得中文了dbq
 ```c#
     public float thing;//serialized, visible, public 
     private float thing0;//not serialized, hidden, private
