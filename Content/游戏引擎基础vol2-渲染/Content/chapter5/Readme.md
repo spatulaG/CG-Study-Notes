@@ -355,16 +355,16 @@ MsRGB*[XYZ] = [1 1 1]
 
 ![image](https://user-images.githubusercontent.com/29577919/170892535-7cd5be03-a6a1-4273-9bbd-0e76b3b956d7.jpeg)
 
-### 第3步：转linear
-<img width="766" alt="image" src="https://user-images.githubusercontent.com/29577919/170886281-e62af0cc-1bb8-4851-8d7e-d9d031aa8738.png">
+### 第3步：CIE XYZ to CIE RGB
+（妈的太坑了为啥linear要用sRGB啊Eric！
 
-- V: display, gamma corrected
-- V': input, linear
+结果乘一下
 
-V = pow(V', gamma)//2.0<gamma<2.5, usually=2.2
+![image](https://user-images.githubusercontent.com/29577919/170896108-559e4982-e0bb-4152-b95c-4c7866f040a5.jpeg)
 
-- 公式：
-![image](https://user-images.githubusercontent.com/29577919/170886863-b9e7a1db-e623-42cb-aada-aba527ef2480.jpeg)
+得到
+
+![image](https://user-images.githubusercontent.com/29577919/170896123-26115afb-bbbd-44ed-a3e9-340cb5722f00.jpeg)
 
 
 
