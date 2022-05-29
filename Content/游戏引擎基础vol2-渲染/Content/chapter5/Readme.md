@@ -312,9 +312,12 @@ backface culling则是由三角形各点顺时针逆时针判断的。
 ## 课后练习答案
 ### 计算内存
 32(64)bit：4(8)byte * 1280 * 720
+
 <img width="667" alt="image" src="https://user-images.githubusercontent.com/29577919/170886241-18ab5a87-cde8-47aa-91e8-f1cea891843f.png">
 
 ### 推导3x3 sRGB和CIE的转换矩阵
+<img width="766" alt="image" src="https://user-images.githubusercontent.com/29577919/170886281-e62af0cc-1bb8-4851-8d7e-d9d031aa8738.png">
+
 
 
 ## 引用：
