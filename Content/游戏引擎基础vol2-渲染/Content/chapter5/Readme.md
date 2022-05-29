@@ -316,7 +316,46 @@ backface culling则是由三角形各点顺时针逆时针判断的。
 <img width="667" alt="image" src="https://user-images.githubusercontent.com/29577919/170886241-18ab5a87-cde8-47aa-91e8-f1cea891843f.png">
 
 ## 推导3x3 sRGB和CIE的转换矩阵
-### 第一步：转linear
+
+### 第1步：计算 Yrgb
+Y（流明），  xyY的rgb三个通道和应该等于white point：（xw，yw，1）
+
+我们使用D65:xw = 0.3127， yw = 0.3290
+
+- sR:x = 0.64;      y = 0.33
+- sG:x = 0.3;       y = 0.6
+- sB:x = 0,15;      y = 0.06
+- sW:x = 0.3127;    y = 0.3290
+
+- XYZw = 0.95, 1, 1.08，
+- XYZr = 1.94, 1, 0.455
+- XYZg = 0.5, 1, 0.1
+- XYZb = 2.5, 1, 13.1
+
+
+将CIEXYZ的RGB作为单位向量，Yrgb是分量代表的亮度，即这个坐标系下的单位长度。由此得到W的RGB
+
+![image](https://user-images.githubusercontent.com/29577919/170890605-684d3118-e0be-4f8f-bcb0-36d38989df70.jpeg)
+
+得到Yr = 0.21, Yg = 0.715, Yb = 0.072
+
+### 第2步：计算 MsRGB
+
+由xyz的定义：
+X = X/(X+Y+Z), Y = Y/(X+Y+Z), Z = Z/(X+Y+Z)
+
+所以:
+X = Y * x/y, Z = Y * z/y = Y*(1-x-y)/y 
+
+MsRGB*[XYZ] = [1 1 1]
+
+![image](https://user-images.githubusercontent.com/29577919/170892533-6f716ae5-613a-4f76-8a26-5a27a8d57629.jpeg)
+
+结果是
+
+![image](https://user-images.githubusercontent.com/29577919/170892535-7cd5be03-a6a1-4273-9bbd-0e76b3b956d7.jpeg)
+
+### 第3步：转linear
 <img width="766" alt="image" src="https://user-images.githubusercontent.com/29577919/170886281-e62af0cc-1bb8-4851-8d7e-d9d031aa8738.png">
 
 - V: display, gamma corrected
@@ -326,20 +365,6 @@ V = pow(V', gamma)//2.0<gamma<2.5, usually=2.2
 
 - 公式：
 ![image](https://user-images.githubusercontent.com/29577919/170886863-b9e7a1db-e623-42cb-aada-aba527ef2480.jpeg)
-### 第二步：计算sRGB
-Y（流明），  xyY的rgb三个通道和应该等于white point：（xw，yw，1）
-
-标准sRGB公式是：
-
-![image](https://user-images.githubusercontent.com/29577919/170887258-12faf515-6fdf-4d07-9c96-8cd6aec74451.jpeg)
-
-或者通过
-
-![image](https://user-images.githubusercontent.com/29577919/170887330-44b8ee91-117b-4972-86ad-4bc8e2a476cc.jpeg)
-
-得到
-
-![image](https://user-images.githubusercontent.com/29577919/170887265-bbbac5c6-20a0-4640-b811-6b81ecee2def.jpeg)
 
 
 
