@@ -79,7 +79,7 @@ R轴有负数
 
 然后给出白色的色坐标和亮度值也可以反推RGB三原色亮度。
 
-- 然而我之前一直以为白点就是这么算出来的后来发现怎么算怎么不对， 原来我们不取1：1：1。
+- 然而我之前一直以为白点就是这么算出来的后来发现怎么算怎么不对， 原来不取1：1：1。
 
 • 等量的三色
 ```c++
@@ -309,14 +309,37 @@ backface culling则是由三角形各点顺时针逆时针判断的。
 
 24bit的depth以外剩下8bit是stencil，用于一些用户自定义的判断。而depth bound则是把深度也按W clip一次。
 
-## 课后练习答案
-### 计算内存
+# 课后练习答案
+## 计算内存
 32(64)bit：4(8)byte * 1280 * 720
 
 <img width="667" alt="image" src="https://user-images.githubusercontent.com/29577919/170886241-18ab5a87-cde8-47aa-91e8-f1cea891843f.png">
 
-### 推导3x3 sRGB和CIE的转换矩阵
+## 推导3x3 sRGB和CIE的转换矩阵
+### 第一步：转linear
 <img width="766" alt="image" src="https://user-images.githubusercontent.com/29577919/170886281-e62af0cc-1bb8-4851-8d7e-d9d031aa8738.png">
+
+- V: display, gamma corrected
+- V': input, linear
+
+V = pow(V', gamma)//2.0<gamma<2.5, usually=2.2
+
+- 公式：
+![image](https://user-images.githubusercontent.com/29577919/170886863-b9e7a1db-e623-42cb-aada-aba527ef2480.jpeg)
+### 第二步：计算sRGB
+Y（流明），  xyY的rgb三个通道和应该等于white point：（xw，yw，1）
+
+标准sRGB公式是：
+
+![image](https://user-images.githubusercontent.com/29577919/170887258-12faf515-6fdf-4d07-9c96-8cd6aec74451.jpeg)
+
+或者通过
+
+![image](https://user-images.githubusercontent.com/29577919/170887330-44b8ee91-117b-4972-86ad-4bc8e2a476cc.jpeg)
+
+得到
+
+![image](https://user-images.githubusercontent.com/29577919/170887265-bbbac5c6-20a0-4640-b811-6b81ecee2def.jpeg)
 
 
 
