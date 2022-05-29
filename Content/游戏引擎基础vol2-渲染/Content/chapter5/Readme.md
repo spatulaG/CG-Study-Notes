@@ -309,6 +309,11 @@ backface culling则是由三角形各点顺时针逆时针判断的。
 
 24bit的depth以外剩下8bit是stencil，用于一些用户自定义的判断。而depth bound则是把深度也按W clip一次。
 
+## 课后练习答案
+### 计算内存
+32(64)bit：4(8)byte*1280*720
+### 推导3x3 sRGB和CIE的转换矩阵
+
 
 ## 引用：
 
