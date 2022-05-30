@@ -310,12 +310,12 @@ backface culling则是由三角形各点顺时针逆时针判断的。
 24bit的depth以外剩下8bit是stencil，用于一些用户自定义的判断。而depth bound则是把深度也按W clip一次。
 
 # 课后练习答案
-## 计算内存
+## 1.计算内存
 32(64)bit：4(8)byte * 1280 * 720
 
 <img width="667" alt="image" src="https://user-images.githubusercontent.com/29577919/170886241-18ab5a87-cde8-47aa-91e8-f1cea891843f.png">
 
-## 推导3x3 sRGB和CIE的转换矩阵
+## 2.推导3x3 sRGB和CIE的转换矩阵
 
 ### 第1步：计算 Yrgb
 Y（流明），  xyY的rgb三个通道和应该等于white point：（xw，yw，1）
@@ -366,12 +366,38 @@ MsRGB*[XYZ] = [1 1 1]
 
 ![image](https://user-images.githubusercontent.com/29577919/170896123-26115afb-bbbd-44ed-a3e9-340cb5722f00.jpeg)
 
-## 计算CIE RGB的rgb的xy值
+## 3.计算CIE RGB的rgb的xy值
 
 有了前面的答案就可以得到
 
 <img width="210" alt="image" src="https://user-images.githubusercontent.com/29577919/171051727-4cce3f2d-2308-435f-8423-d2d161cbb2dd.png">
 
+## 4.sRGB到uRGB
+由这个公式
+
+<img width="332" alt="image" src="https://user-images.githubusercontent.com/29577919/171055702-d81e61e6-816b-473e-ae56-63c84d2a9ba9.png">
+
+然后* Msrgb的逆矩阵（即先转到XYZ然后再到sRGB）可以推导出答案
+
+<img width="508" alt="image" src="https://user-images.githubusercontent.com/29577919/171055808-4b3fd9d0-dc89-4287-b741-3c65f460e954.png">
+
+## 6.世界坐标转换
+由题W是右手坐标系，x向前y右z下
+- 转换为W1:x向右y前z下
+- 和W2:x右y朝上z朝内
+
+### W<-W1:
+- 0 1 0
+- 1 0 0
+- 0 0 -1
+### W<-W2:
+- 0 0 -1
+- 1 0 0 
+- 0 -1 0
+
+### 7.目光如炬方向
+Wskull = Vector3(Mskull * ... * MPelvis * Mroot * Wlocation)
+Vector3 facing = Wskull.front//Wskull[[1,0,0]]T;
 
 ## 引用：
 
