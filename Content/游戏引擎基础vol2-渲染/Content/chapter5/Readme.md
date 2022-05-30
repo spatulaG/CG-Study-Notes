@@ -342,7 +342,7 @@ Y（流明），  xyY的rgb三个通道和应该等于white point：（xw，yw�
 ### 第2步：计算 MsRGB
 
 由xyz的定义：
-X = X/(X+Y+Z), Y = Y/(X+Y+Z), Z = Z/(X+Y+Z)
+x = X/(X+Y+Z), y = Y/(X+Y+Z), z = Z/(X+Y+Z)
 
 所以:
 X = Y * x/y, Z = Y * z/y = Y*(1-x-y)/y 
@@ -366,6 +366,11 @@ MsRGB*[XYZ] = [1 1 1]
 
 ![image](https://user-images.githubusercontent.com/29577919/170896123-26115afb-bbbd-44ed-a3e9-340cb5722f00.jpeg)
 
+## 计算CIE RGB的rgb的xy值
+
+有了前面的答案就可以得到
+
+<img width="210" alt="image" src="https://user-images.githubusercontent.com/29577919/171051727-4cce3f2d-2308-435f-8423-d2d161cbb2dd.png">
 
 
 ## 引用：
